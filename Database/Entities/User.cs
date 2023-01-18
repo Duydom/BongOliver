@@ -27,6 +27,7 @@ namespace BongOliver.API.Database.Entities
         [Required]
         [StringLength(16)]
         public string phoneNumber {get; set;}
+        [Required]
         public int role_id {get; set;}
         // public List<Role> role {get; set;}
         public byte[] PasswordHash {get; set;}
@@ -34,5 +35,7 @@ namespace BongOliver.API.Database.Entities
         public DateTime createAt {get; set;}
         public DateTime updateAt {get; set;}
         // public string token {get; set;}
+
+        public Role role {get; set;}
     }
 }

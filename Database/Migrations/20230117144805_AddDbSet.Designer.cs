@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BongOliver.API.Database.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230110021819_InitialDb")]
-    partial class InitialDb
+    [Migration("20230117144805_AddDbSet")]
+    partial class AddDbSet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,24 @@ namespace BongOliver.API.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BongOliver.API.Database.Entities.Role", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Roles");
+                });
 
             modelBuilder.Entity("BongOliver.API.Database.Entities.User", b =>
                 {
@@ -40,6 +58,9 @@ namespace BongOliver.API.Database.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("createAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("dateOfBirth")
                         .HasColumnType("datetime2");
@@ -69,6 +90,9 @@ namespace BongOliver.API.Database.Migrations
                     b.Property<int>("role_id")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("updateAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("username")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -76,7 +100,25 @@ namespace BongOliver.API.Database.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("role_id");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BongOliver.API.Database.Entities.User", b =>
+                {
+                    b.HasOne("BongOliver.API.Database.Entities.Role", "role")
+                        .WithMany("users")
+                        .HasForeignKey("role_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("role");
+                });
+
+            modelBuilder.Entity("BongOliver.API.Database.Entities.Role", b =>
+                {
+                    b.Navigation("users");
                 });
 #pragma warning restore 612, 618
         }

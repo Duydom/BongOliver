@@ -4,6 +4,7 @@ using BongOliver.API.Services;
 using BongOliver.API.Services.UserService;
 using BongOliver.API.Services.TokenService;
 using BongOliver.API.Services.AuthService;
+using BongOliver.API.Services.RoleService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -26,10 +27,13 @@ services.AddSwaggerGen();
 services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
 
-services.AddScoped<IUserService, UserService>();
 services.AddScoped<IUserRepository, UserRepository>();
+services.AddScoped<IRoleRepository, RoleRepository>();
+
+services.AddScoped<IUserService, UserService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<ITokenService, TokenService>();
+services.AddScoped<IRoleService, RoleService>();
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

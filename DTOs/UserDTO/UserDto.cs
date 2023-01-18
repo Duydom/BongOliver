@@ -10,7 +10,7 @@ namespace BongOliver.API.DTOs.UserDTO
         public DateTime? dateOfBirth {get; set;}
         public string username {get; set;}
         public string phoneNumber {get; set;}
-        public int role_id {get; set;}
+        public string role {get; set;}
         public DateTime createAt {get; set;}
         public DateTime updateAt {get; set;}
     }
